@@ -1,0 +1,23 @@
+{
+  "expo": {
+    "name" : "SunuCouture",
+    "slug": "SunuCouture",
+    "description" : "Votre boutique de couture dans votre smartphone",
+    "icon" : "./img/sauver+.png",
+    "facebookScheme" : "fb1551784921556987",
+    "loading" : {
+      "backgroundImage" : "./img/sauver+.png"
+      
+
+    },
+    "sdkVersion": "21.0.0",
+    "androidStatusBar": {
+      "backgroundColor": "#00c4cc"
+     
+    },
+    "splash": {
+      "image": "./img/Walkthrough.png"
+      
+    }
+  }
+}
