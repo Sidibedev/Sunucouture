@@ -32,29 +32,14 @@ export default class Forgot extends Component {
       
     <StyleProvider style={getTheme(platform)}>
       <Container>
-      <Header>
+      <Header />
 
-      
-
-        
-      <Left> 
-      <Icon style={{color:"white"}} name="arrow-back" onPress={() => this.props.navigation.goBack()}/>
-      </Left>
-      
-      <Body>
-      <Title style={{color : 'white'}}>Mot de passe oublié </Title>
-      </Body>
-
-     
-         
-        
-      </Header>
         <Content>
 
 
         <TextInput style = {{width:'100%' , height:'50%' , marginLeft:5}}
         underlineColorAndroid ='transparent'
-        placeholder = "Email "
+        placeholder = "Entrer votre email "
         placeholderTextColor = "#F77062"
         autoCapitalize = "none"
         onChangeText={email => this.setState({ email })} />
@@ -104,7 +89,7 @@ const styles  = StyleSheet.create({
         borderRadius: 50,         // Rounded border
         borderWidth: 2,           // 2 point border widht
         borderColor: '#FFFFFF',   // White colored border
-        paddingHorizontal: 122,    // Horizontal padding
+        paddingHorizontal: 100,    // Horizontal padding
         paddingVertical: 10,      // Vertical padding
         backgroundColor:"#F77062",
         alignSelf:'center'
@@ -135,8 +120,7 @@ const styles  = StyleSheet.create({
       // Button text
       text: {
         color: 'white',
-        fontWeight: 'bold',
-        fontSize: 15,
+        
         
       },
       textgoogle: {

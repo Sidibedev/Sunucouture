@@ -7,6 +7,8 @@ import firebase from 'firebase'
 export default class Acceuil extends Component {
    
     render() {
+
+        
        
         return (
            <ImageBackground
@@ -18,7 +20,7 @@ export default class Acceuil extends Component {
 
             <View style={styles.top}>
 
-                   <Image source={require('./img/dressmaker.png')} style={{width : 120 , height : 120}}/>
+                   <Image source={require('./img/dressmaker.png')} style={{paddingTop : 20, width : 70 , height : 70}}/>
                     <Text style={styles.bienvenu}>
                     SUNUCOUTURE 
                     </Text>
@@ -27,16 +29,16 @@ export default class Acceuil extends Component {
 
             </View>
 
-            <View>
+            <View style={{position : 'absolute' , bottom:0  ,paddingBottom : 10, flex : 1, alignItems:'center' , justifyContent:'center' , alignSelf:'center'}}>
                     <Button block style={styles.button}   onPress={() => this.props.navigation.navigate("Connexion")}>
                     
-                            <Text style={{color:'white' , fontSize : 16 , fontWeight : 'bold'}} > Connexion </Text>
+                            <Text style={{color:'white' , fontWeight:'bold' }} > Connexion </Text>
                     
                     </Button>
 
                     <Button block style={styles.button}  onPress={() => this.props.navigation.navigate("Inscription")}>
                     
-                            <Text style={{color:'white' , fontSize : 16 , fontWeight : 'bold'}}> Inscription </Text>
+                            <Text style={{color:'white' , fontWeight : 'bold'}}> Inscription </Text>
                     
                     </Button>
             </View>
@@ -63,7 +65,7 @@ const styles  = StyleSheet.create({
     },
     overlay : {
         flex:1,
-        backgroundColor : 'rgba(247, 112, 98, .4)'
+        backgroundColor : 'rgba(247, 112, 98, .3)'
 
     },
     top : {
@@ -76,8 +78,8 @@ const styles  = StyleSheet.create({
         borderRadius: 50,         // Rounded border
         borderWidth: 2,           // 2 point border widht
         borderColor: '#F77062',   // White colored border
-        paddingHorizontal: 122,    // Horizontal padding
-        paddingVertical: 10,      // Vertical padding
+        paddingHorizontal: 120,    // Horizontal padding
+        paddingVertical: 5,      // Vertical padding
         backgroundColor:"#F77062",
         alignSelf:'center'
          
@@ -96,7 +98,7 @@ const styles  = StyleSheet.create({
     },
     bienvenu : {
 
-        fontSize:28,
+        fontSize:18,
         color:'#fff',
         fontWeight : "bold"
         

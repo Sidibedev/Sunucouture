@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Header, Item , Input ,  Separator , Thumbnail, ListItem , Content , Footer, FooterTab, Button, Left , Right , Body,  Icon, Text , StyleProvider , Title } from 'native-base'
-import {Image , ListView , StatusBar} from 'react-native'
+import {Image , ListView , StatusBar, Modal, Alert} from 'react-native'
 import {StackNavigator , TabNavigator} from 'react-navigation'
 import { Root } from "native-base";
 import getTheme from './native-base-theme/components';
@@ -22,18 +22,70 @@ import Menuprincipal from './Menuprincipal'
 import Parametre from './Parametre'
 import typehabit from './typehabit'
 import ajoutypehabit from './ajoutypehabit'
-
-
-
+import Phone from './Phone'
+import Phoneverif from './Phoneverif'
+import Model from './Model'
+import Clients from './Clients'
+import Ajoutclient from './Ajoutclient'
+import Catalogue from './Catalogue'
+import Ajoutcatalogue from './Ajoutcatalogue'
+import Allcatalogues from './Allcatalogues'
+import Ajoutmodel from './Ajoutmodel'
+import Client from './Client'
+import Clientselect from './Clientselect'
+import selecType from './selecType'
+import takemesure from './takemesure'
  
 const App =  StackNavigator({
+Allcatalogues : {
+  screen : Allcatalogues
+},
+takemesure : {
+  screen : takemesure
+},
+selecType : {
+  screen : selecType
+},
+Clientselect : {
+  screen : Clientselect
+},
+Ajoutmodel : {
+  screen : Ajoutmodel
+},
+  Ajoutcatalogue : {
+    screen : Ajoutcatalogue
+  },
  
   Services : { 
     screen: Services,
  },
+ Catalogue : {
+   screen : Catalogue
+ },
+Ajoutclient : {
+  screen : Ajoutclient
+},
+ Clients : {
+   screen : Clients
+ },
+ Client : {
+  screen : Client
+},
+
+
+ Model : {
+   screen : Model
+ },
+ Phoneverif : {
+   screen : Phoneverif
+ },
+ Phone :{
+   screen : Phone
+ },
  ajoutypehabit : {
    screen : ajoutypehabit
  },
+ 
  typehabit : {
    screen : typehabit
  },

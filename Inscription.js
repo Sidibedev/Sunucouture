@@ -6,6 +6,13 @@ import {Button , Card , CardItem,Form ,Item,Input, Label, Body , Container , Con
 import firebase from 'firebase'
 import Connexion from './Connexion'
 import FirebaseConfig from './FirebaseConfig'
+import ElevatedView from 'react-native-elevated-view'
+import axios from 'axios'
+import {LoginManager , AccessToken} from 'react-native-fbsdk'
+const FBSDK = require('react-native-fbsdk');
+const {
+  LoginButton,
+} = FBSDK;
 
 export default class Inscription extends Component {
 
@@ -13,6 +20,44 @@ export default class Inscription extends Component {
     componentDidMount() {
         // Hide the status bar
         StatusBar.setHidden(true);
+      }
+
+      async  logIn() {
+        const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync('1551784921556987', {
+            permissions: ['public_profile'],
+          });
+        if (type === 'success') {
+          // Get the user's name using Facebook's Graph API
+          const response = await fetch(
+            `https://graph.facebook.com/me?access_token=${token}`);
+          Alert.alert(
+            'Logged in!',
+            `Hi ${(await response.json()).name}!`,
+
+          );
+          this.props.navigation.navigate("Menuprincipal")
+
+        }
+      }
+
+      async  signInWithGoogleAsync() {
+        try {
+          const result = await Expo.Google.logInAsync({
+           // androidClientId: YOUR_CLIENT_ID_HERE,
+            iosClientId: '839829875428-nevh5l5r54ccg4lra6vnecjhehv01ijo.apps.googleusercontent.com',
+            scopes: ['profile', 'email'],
+          });
+      
+          if (result.type === 'success') {
+              alert(result.user.name)
+           this.props.navigation.navigate("Menuprincipal")
+            return result.accessToken;
+          } else {
+            return {cancelled: true};
+          }
+        } catch(e) {
+          return {error: true};
+        }
       }
 
       state = { email: '', password: '', verifypassword:'' , error: '', loading: false };
@@ -31,6 +76,10 @@ export default class Inscription extends Component {
            if(user && user.emailVerified === false){
            user.sendEmailVerification().then(function(){
            alert("FELICITATION VOTRE COMPTE A ETE CREE AVEC SUCCES , UN MAIL VOUS A ETE ENVOYER POUR VALIDER VOTRE COMPTE");
+           axios.post('https://sunucouture-api-agileague.herokuapp.com/api/tailleurs', {
+            "email": ""+email+"",
+           
+          })
         }).catch(function(error) {
             // Handle Errors here.
            
@@ -94,13 +143,13 @@ export default class Inscription extends Component {
                 flex: 1,
                 flexDirection: 'column',
                 justifyContent: 'space-between',
-                backgroundColor: 'white'
+                backgroundColor: '#F6F6F7'
                 
               }}>
                 <View style={{width: '100%', height: 200,  alignItems:"center" , justifyContent:"center"}}>
                     
 
-                    <Image source={require('./img/sunulogo.png')} style={{marginTop : 45,width : 120 , height : 120}}/>
+                    <Image source={require('./img/sunulogo.png')} style={{marginTop : 10,width : 120 , height : 120}}/>
                     
 
                     <Text style={styles.connectezVous}>  S U N U C O U T U R E  </Text>
@@ -112,36 +161,55 @@ export default class Inscription extends Component {
 
 
 
-                <View style={{width: '100%', height: 300  , alignItems:"center" , justifyContent:"center"}}>
+                <View style={{width: '100%', height: 400  , alignItems:"center" , justifyContent:"center"}}>
 
-               <View style={{width:'90%',height:'60%', backgroundColor:'#f6f6f7' , shadowOpacity:400 , shadowColor:'white'}}>
+                <ElevatedView
+                 elevation={10}
+                 style={styles.stayElevated}
+               >
+
+
                 <TextInput style = {{width:'100%' , height:'33%' , marginLeft:5}}
                 underlineColorAndroid ='transparent'
                 placeholder = "Entrer votre email "
-                placeholderTextColor = "#F77062"
+        
                 autoCapitalize = "none"
                 onChangeText = {email => this.setState({ email })} />
+
+                <View
+                style={{
+                  borderBottomColor: '#c0bebd',
+                  borderBottomWidth: 1,
+                }}
+              />
 
               
                <TextInput style = {{width:'100%', height:'33%' , marginLeft:5}}
                underlineColorAndroid ='transparent'
                 placeholder = "Entrer votre Mot de passe "
-                placeholderTextColor = "#F77062"
+               
                 autoCapitalize = "none"
                 secureTextEntry = {true}
                 onChangeText = {password => this.setState({ password })} />
 
+                <View
+                style={{
+                  borderBottomColor: '#c0bebd',
+                  borderBottomWidth: 1,
+                }}
+              />
+
                 <TextInput style = {{width:'100%', height:'33%' , marginLeft:5}}
                underlineColorAndroid ='transparent'
                 placeholder = "Confirmer votre mot de passe "
-                placeholderTextColor = "#F77062"
+               
                 autoCapitalize = "none"
                 secureTextEntry = {true}
                 onChangeText = {verifypassword => this.setState({ verifypassword })} />
               
                
+                </ElevatedView>
                 
-                </View>
 
                 
               
@@ -155,20 +223,27 @@ export default class Inscription extends Component {
         
                 </Button>
 
-                <View style={{flexDirection : 'row' , marginTop : 50}}>
+                <View style={{flexDirection : 'row' , marginTop : 20}}>
+                
+                <TouchableOpacity  onPress={this.signInWithGoogleAsync.bind(this)}>
 
-                <TouchableOpacity>
-
-                <Image source={require('./img/face.png')} style={{width : 50 , height : 50}}/>
+                <Image source={require('./img/f.png')} style={{width : 40 , height : 40}}/>
                 </TouchableOpacity>
 
+                <TouchableOpacity  onPress={this.logIn.bind(this)}>
 
-                <TouchableOpacity>
-
-                <Image source={require('./img/google.png')} style={{marginLeft:16, width : 50 , height : 50}}/>
+                <Image source={require('./img/g.png')} style={{marginLeft:16,width : 40 , height : 40}}/>
                 </TouchableOpacity>
 
-                </View>
+                <TouchableOpacity  onPress={() => this.props.navigation.navigate("phoneauth")}>
+
+                <Image source={require('./img/ph.png')} style={{marginLeft:16,width : 40 , height : 40}}/>
+                </TouchableOpacity>
+                    
+                
+                 </View>
+
+                
 
                  
                
@@ -218,12 +293,18 @@ const styles  = StyleSheet.create({
 	textAlign: "center",
 	color: "#ffffff"
     },
+    stayElevated: {
+        width: '90%',
+        height: '40%',
+        margin: 5,
+        backgroundColor: 'white'
+      },
     button: {
         marginTop:10,
         borderRadius: 50,         // Rounded border
         borderWidth: 2,           // 2 point border widht
         borderColor: '#F77062',   // White colored border
-        paddingHorizontal: 130,    // Horizontal padding
+        paddingHorizontal: 122,    // Horizontal padding
         paddingVertical: 10,      // Vertical padding
         backgroundColor:"#F77062",
         alignSelf:'center'
@@ -254,8 +335,7 @@ const styles  = StyleSheet.create({
       // Button text
       text: {
         color: 'white',
-        fontWeight: 'bold',
-        fontSize: 15,
+        
         
       },
       textgoogle: {

@@ -1,6 +1,18 @@
 import React from 'react';
-import { Container, Header,Item , List ,Input , ListItem , Content , AsyncStorage , Footer, FooterTab, Button, Left , Right , Body,  Icon, Text , StyleProvider , Title } from 'native-base'
-import {Image , ListView,FlatList,StyleSheet,Alert, View , ImageBackground, StatusBar , StackNavigator} from 'react-native'
+import { Container, Header,Item , List ,Input , ListItem , Content , AsyncStorage , Footer, FooterTab, Button, Left , Right , Body,  Icon , StyleProvider , Title } from 'native-base'
+import {
+  Image,
+  ImageBackground,
+  Linking,
+  ListView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native'
+
+import ActionButton from 'react-native-action-button';
 
 import { AppLoading, Asset, Font } from 'expo'
 import getTheme from './native-base-theme/components';
@@ -14,46 +26,48 @@ import { NavigationActions } from 'react-navigation'
 import Placeholder from 'rn-placeholder';
 import firebase from 'firebase'
 import Connexion from './Connexion';
-
+import ElevatedView from 'react-native-elevated-view'
 export default class Profil extends React.Component {
-  logout(){
+
+
   
-    //this.props.navigation.navigate("Connexion")
+  constructor(){
+    super()
+    this.state = {
+      
+      emailUser:firebase.auth().currentUser.email,
+      nom :'',
+      prenom:'',
+      tel : '',
+      adresse : '',
+      avatar :null,
+      refreshing : false
 
-    const resetAction = NavigationActions.reset({
-      index: 0,
-      actions: [
-        NavigationActions.navigate({ routeName: 'Connexion'})
-      ]
-    })
-    this.props.navigation.dispatch(resetAction)
-    firebase.auth().signOut()
-    .then(function() {
      
-       alert('A bientot ')
-     
-    
-    
-    
-    })
-    .catch(function(error) {
-      alert(error)
-    });
+    }
+    this.fetchUSer()
+   
+
   }
 
+  fetchUSer(){
 
-  disable (){
-    this.props.navigation.navigate("Screens")
 
-    var user = firebase.auth().currentUser;
+    axios.get('https://sunucouture-api-agileague.herokuapp.com/api/tailleurs/findOne?filter[where][email]='+this.state.emailUser) // Fetching info of hospital
+    .then((response) => {
 
-  user.delete().then(function() {
-  alert('compte desactivé')
- 
-}).catch(function(error) {
-  alert('something wrong')
-});
+
+      
+      
+      this.setState({nom : response.data.nom  , prenom : response.data.prenom  , adresse : response.data.adresse , tel : response.data.tel , avatar : response.data.avatar  })
+     
+
+    }) 
+  
+    
+
   }
+  
 render() {
   
   return (
@@ -62,14 +76,14 @@ render() {
          
           <Header>
             <Left> 
-          <Icon style={{color:"white"}} name="home" onPress={() => this.props.navigation.goBack()}/>
+          <Icon style={{color:"white"}} name="arrow-back" onPress={() => this.props.navigation.goBack()}/>
             </Left>
                 <Body>
                     <Title style={{color : 'white'}}>Mon Profil </Title>
                 </Body>
 
                 <Right>
-                <Icon style={{color:"white"}} name="contact" onPress={() => this.props.navigation.navigate("Profil")}/>
+                
                 </Right>
                
          </Header>
@@ -77,53 +91,97 @@ render() {
          <Content>
 
 
-         <List>
 
-            
 
+
+         <View style={styles.headerContainer}>
+        <ImageBackground
+          style={styles.headerBackgroundImage}
+          blurRadius={20}
+          source={require('./img/background.jpeg')}
+        >
+          <View style={styles.headerColumn}>
+            <Image
+              style={styles.userImage}
+              source={{ uri: this.state.avatar ? this.state.avatar : './img/ava.png' }}
+            />
+            <Text style={styles.userNameText}>{this.state.nom}  {this.state.prenom}</Text>
+            <View style={styles.userAddressRow}>
+              <View>
+                <Icon 
+                  style={{color : "white"}}
+                  name="md-navigate"
+                  underlayColor="transparent"
+                  iconStyle={styles.placeIcon}
+                  
+                />
+              </View>
+              <View style={styles.userCityRow}>
+                <Text style={styles.userCityText}>
+                 {this.state.adresse} 
+                </Text>
+              </View>
+            </View>
+          </View>
+        </ImageBackground>
+      </View>
+
+
+      <View style={{paddingTop : 12 , justifyContent : 'center' , alignItems : 'center' }}>
+
+     
+     
+
+      <ElevatedView
+      elevation={10}
+      style={styles.stayElevated}
+       >
+
+          <ListItem icon button>
+            <Left>
+              <Button>
+              <Icon active name="mail"/>
+              </Button>
               
-         <ListItem button onPress={this.logout.bind(this)}>
-         <Left>
-         <Image source={require('./img/logout.png')} style={{width : 40 , height : 40}} />
-         <Text>Deconnexion</Text>
-         </Left>
-         </ListItem>
-
-        
+            </Left>
+            <Body>
+              <Text>Email : {this.state.emailUser} </Text>
+            </Body>
            
-         <ListItem button   onPress={() => this.props.navigation.navigate("Infosprofile")}>
-         <Left>
-         <Image source={require('./img/infos.png')} style={{width : 40 , height : 40}} />
-         <Text>Mes informations </Text>
-         </Left>
-         </ListItem>
+          </ListItem>
 
+          </ElevatedView>
+
+
+         
+
+
+          <ElevatedView
+      elevation={10}
+      style={styles.stayElevated}
+       >
+          <ListItem icon button>
+          <Left>
+            <Button>
+            <Icon active name="md-call"  />
+            </Button>
+          </Left>
+          <Body>
+            <Text>Telephone :  {this.state.tel} </Text>
+          </Body>
+         
         
-           
-        
+          </ListItem>
 
-        <ListItem button onPress={this.disable.bind(this)}>
-         <Left>
-         <Image source={require('./img/disable.png')} style={{width : 40 , height : 40}} />
-         <Text>Desactiver mon compte</Text>
-         </Left>
-         </ListItem>
+          </ElevatedView>
+          
+          
+         
 
-        
-
-       
-
-        
+       </View>
 
 
 
-       
-        
- </List>
-
-       
-
-           
        
                
                 
@@ -141,51 +199,107 @@ render() {
 
 
 const styles  = StyleSheet.create({
-  container : {
-      flex : 1 ,
-      width : '100%',
-      height : '100%'
-  },
-  overlay : {
-      flex:1,
-      backgroundColor : 'rgba(247, 112, 98, .4)'
 
+
+  containerO: {
+    flexDirection: 'row',
   },
-  top : {
-      height:'50%',
-      alignItems:'center',
-      justifyContent : 'center'
+  stayElevated: {
+    width: '90%',
+    height: '30%',
+    margin: 5,
+    backgroundColor: '#fffcfc'
   },
-  button: {
-      marginTop:15,
-      borderRadius: 50,         // Rounded border
-      borderWidth: 2,           // 2 point border widht
-      borderColor: '#F77062',   // White colored border
-      paddingHorizontal: 122,    // Horizontal padding
-      paddingVertical: 10,      // Vertical padding
-      backgroundColor:"#F77062",
-      alignSelf:'center'
-       
+  separatorOffsetO: {
+    flex: 2,
+    flexDirection: 'row',
+  },
+  separatorO: {
+    flex: 8,
+    flexDirection: 'row',
+    borderColor: '#EDEDED',
+    borderWidth: 0.8,
+  },
+
+
+
+  cardContainer: {
+    backgroundColor: '#FFF',
+    borderWidth: 0,
+    flex: 1,
+    margin: 0,
+    padding: 0,
+  },
+  submitButton: {
+    position: 'absolute',
+    bottom:0,
+    left:0,
     },
-  header:{
-      color : '#fff',
-      fontSize:15,
-      alignItems:'center',
-      borderColor:'#F77062',
-      borderWidth: 2,
-      padding : 20,
-      paddingLeft : 40,
-      paddingRight:40,
-      backgroundColor:'#F77062'
-
+  container: {
+    flex: 1,
   },
-  bienvenu : {
-
-      fontSize:28,
-      color:'#fff',
-      fontWeight : "bold"
-      
-
-      
-  }
+  emailContainer: {
+    backgroundColor: '#FFF',
+    flex: 1,
+    paddingTop: 30,
+  },
+  headerBackgroundImage: {
+    paddingBottom: 20,
+    paddingTop: 35,
+  },
+  headerContainer: {},
+  headerColumn: {
+    backgroundColor: 'transparent',
+    ...Platform.select({
+      ios: {
+        alignItems: 'center',
+        elevation: 1,
+        marginTop: -1,
+      },
+      android: {
+        alignItems: 'center',
+      },
+    }),
+  },
+  placeIcon: {
+    color: 'white',
+    fontSize: 26,
+  },
+  scroll: {
+    backgroundColor: '#FFF',
+  },
+  telContainer: {
+    backgroundColor: '#FFF',
+    flex: 1,
+    paddingTop: 30,
+  },
+  userAddressRow: {
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  userCityRow: {
+    backgroundColor: 'transparent',
+  },
+  userCityText: {
+    color: '#A5A5A5',
+    fontSize: 15,
+    fontWeight: '600',
+    textAlign: 'center',
+  },
+  userImage: {
+    borderColor: "#01C89E",
+    borderRadius: 85,
+    borderWidth: 3,
+    height: 170,
+    marginBottom: 15,
+    width: 170,
+  },
+  userNameText: {
+    color: '#FFF',
+    fontSize: 22,
+    fontWeight: 'bold',
+    paddingBottom: 8,
+    textAlign: 'center',
+  },
+  
 })

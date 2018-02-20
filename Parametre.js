@@ -1,17 +1,17 @@
 import React, { Component } from "react";
-import { Platform , Image } from "react-native";
+import { Platform , Image  , StyleSheet} from "react-native";
 import { NavigationActions } from 'react-navigation'
 import firebase from 'firebase'
 import Connexion from './Connexion';
-
+import { Share } from 'react-native';
+import Communications from 'react-native-communications';
+import { ListItem , List } from 'react-native-elements'
 import {
   Container,
   Header,
   Title,
   Content,
   Button,
-  Icon,
-  ListItem,
   Text,
   Badge,
   Left,
@@ -22,6 +22,9 @@ import {
   Picker,
   Separator
 } from "native-base";
+import Icon from './Icon'
+import InfoText from './InfoText'
+
 
 
 
@@ -61,6 +64,37 @@ export default class Parametre extends Component {
   }
 
 
+  Share() {
+    Share.share({
+      message:'Sunucouture est une application mobile qui aide les tailleurs dans la gestion de leur atelier',
+      url: 'https://sunucouture-api-agileague.herokuapp.com/',
+      title: 'Sunucouture , the tailor app'
+    }, {
+      // Android only:
+      dialogTitle: 'Partager Sunucouture aux autres tailleurs',
+      // iOS only:
+      excludedActivityTypes: [
+        'com.apple.UIKit.activity.PostToTwitter'
+      ]
+    })
+  }
+
+  
+
+  sendmail() {
+    let email = 'contact@sunucouture.sn'
+    Communications.email(email, null, null, null, 'Via Sunucouture')
+  
+  }
+
+  noter(){
+
+    Communications.web('https://play.google.com/store')
+  }
+  propos() {
+    Communications.web('https://sunucouture-api-agileague.herokuapp.com')
+  }
+
   disable (){
     this.props.navigation.navigate("Screens")
 
@@ -89,110 +123,221 @@ export default class Parametre extends Component {
     });
   }
   render() {
+    
     return (
       <Container>
         <Header>
           <Left>
             <Button transparent onPress={() => this.props.navigation.goBack()}>
-              <Icon name="arrow-back" style={{color:"white"}} />
+           <Text style={{color:"white"}}> Back </Text>
             </Button>
           </Left>
           <Body>
-            <Title>Parametres</Title>
+            <Title style={{color : "white"}}>Parametres</Title>
           </Body>
           <Right />
         </Header>
 
         <Content>
-        <ListItem itemDivider>
-        <Text style={{fontWeight:'bold'}}>Mon profil</Text>
-        </ListItem> 
-          <ListItem icon button onPress={this.logout.bind(this)}>
-            <Left>
-            <Image source={require('./img/logout.png')} style={{width : 30 , height : 30}}/>
-            </Left>
-            <Body>
-              <Text>Deconnexion</Text>
-            </Body>
-           
-          </ListItem>
-          <ListItem icon button onPress={() => this.props.navigation.navigate("Infosprofile")}>
-            <Left>
-            <Image source={require('./img/curriculum.png')} style={{width : 30 , height : 30}}/>
-            </Left>
-            <Body>
-              <Text>Mes infos</Text>
-            </Body>
-           
-          </ListItem>
-          <ListItem icon last button onPress={this.disable.bind(this)}>
-            <Left>
-            <Image source={require('./img/disable.png')} style={{width : 30 , height : 30}}/>
-            </Left>
-            <Body>
-              <Text>Desactiver mon compte</Text>
-            </Body>
-            
-          </ListItem>
 
-          <ListItem itemDivider>
-          <Text style={{fontWeight:'bold'}}>Configuration</Text>
-          </ListItem> 
-
-
-          <ListItem icon button onPress={() => this.props.navigation.navigate("typehabit")}>
-            <Left>
-            <Image source={require('./img/clothes.png')} style={{width : 30 , height : 30}}/>
-            </Left>
-            <Body>
-              <Text>gerer mes types d'habit</Text>
-            </Body>
-            
-          </ListItem>
+        <InfoText text="Compte" />
+        <List containerStyle={styles.listContainer}>
          
 
-          <ListItem itemDivider>
-          <Text style={{fontWeight:'bold'}}>Support</Text>
-          </ListItem> 
 
-          <ListItem icon>
-            <Left>
-              <Button style={{ backgroundColor: "#FD3C2D" }}>
-                <Icon active name="notifications" style={{color : "white"}}  />
-              </Button>
-            </Left>
-            <Body>
-              <Text>Notifications</Text>
-            </Body>
-            <Right>
-            <Switch value={false} onTintColor="#50B948" />
-            </Right>
-          </ListItem>
-          <ListItem icon>
-            <Left>
-              <Button style={{ backgroundColor: "blue" }}>
-                <Icon active name="share" style={{color : "white"}} />
-              </Button>
-            </Left>
-            <Body>
-              <Text>Partager l'application</Text>
-            </Body>
-           
-          </ListItem>
-          <ListItem icon last>
-            <Left>
-              <Button style={{ backgroundColor: "#5855D6" }}>
-                <Icon active name="help" style={{color : "white"}} />
-              </Button>
-            </Left>
-            <Body>
-              <Text >some help ?</Text>
-            </Body>
-            <Right>
-              <Text>Yes</Text>
-            </Right>
-          </ListItem>
+
+         <ListItem
+            title="Deconnexion"
             
+            onPress={this.logout.bind(this)}
+            containerStyle={styles.listItemContainer}
+            leftIcon={
+              <Icon
+                raised
+                containerStyle={{ backgroundColor: '#F77062' }}
+                icon={{
+                  name: 'logout',
+                  type:'material-community'
+                }}
+              />
+            }
+          />
+
+         
+
+
+          <ListItem
+            title="Mettre a jour mes informations"
+            
+            onPress={() => this.props.navigation.navigate("Infosprofile")}
+            containerStyle={styles.listItemContainer}
+            leftIcon={
+              <Icon
+                containerStyle={{ backgroundColor: '#96ceb4' }}
+                icon={{
+                  name: 'update',
+                }}
+              />
+            }
+          />
+
+
+          <ListItem
+            title="Mon profil"
+            
+            onPress={() => this.props.navigation.navigate("Profil")}
+            containerStyle={styles.listItemContainer}
+            leftIcon={
+              <Icon
+                containerStyle={{ backgroundColor: '#03396c' }}
+                icon={{
+                  type: 'material',
+                  name: 'language',
+                }}
+              />
+            }
+          />
+
+
+          <ListItem
+          title="Desactiver mon compte"
+          
+          onPress={this.disable.bind(this)}
+          containerStyle={styles.listItemContainer}
+          leftIcon={
+            <Icon
+              containerStyle={{ backgroundColor: '#ae5a41' }}
+              icon={{
+                name: 'sync-disabled',
+              }}
+            />
+          }
+        />
+         
+          
+
+        <InfoText text="Configuration"/>
+
+        
+
+          
+          
+
+          <ListItem
+          title="Gestion des types d'habits"
+          
+          onPress={() => this.props.navigation.navigate("typehabit")}
+          containerStyle={styles.listItemContainer}
+          leftIcon={
+            <Icon
+              containerStyle={{ backgroundColor: '#FAD291' }}
+              icon={{
+                type: 'entypo',
+                name: 'light-bulb'
+              }}
+            />
+          }
+        />
+
+ 
+
+        <ListItem
+            switchButton
+            hideChevron
+            title="Notifications"
+            switched={this.state.pushNotifications}
+            onSwitch={this.onChangePushNotifications}
+            containerStyle={styles.listItemContainer}
+            leftIcon={
+              <Icon
+                containerStyle={{
+                  backgroundColor: '#a32020',
+                }}
+                icon={{
+                  type: 'material',
+                  name: 'notifications',
+                }}
+              />
+            }
+          />
+         
+
+         
+
+          <InfoText text="Support" />
+
+
+          <ListItem
+          title="Partager"
+          
+          onPress={this.Share.bind(this)}
+          containerStyle={styles.listItemContainer}
+          leftIcon={
+            <Icon
+              containerStyle={{ backgroundColor: '#be29ec' }}
+              icon={{
+                name: 'share',
+              }}
+            />
+          }
+        />
+
+
+        <ListItem
+        title="send feeback"
+        onPress={this.sendmail.bind(this)}
+        containerStyle={styles.listItemContainer}
+        leftIcon={
+          <Icon
+            containerStyle={{
+              backgroundColor: '#00C001',
+            }}
+            icon={{
+              type: 'materialicon',
+              name: 'feedback',
+            }}
+          />
+        }
+      />
+
+
+          
+          
+      <ListItem
+      title="Noter l'app"
+      onPress={this.noter.bind(this)}  
+      containerStyle={styles.listItemContainer}
+      leftIcon={
+        <Icon
+          containerStyle={{
+            backgroundColor: '#FECE44',
+          }}
+          icon={{
+            type: 'entypo',
+            name: 'star',
+          }}
+        />
+      }
+    />
+
+
+    <ListItem
+    title="A propos de nous"
+    onPress={this.propos.bind(this)}
+    containerStyle={styles.listItemContainer}
+    leftIcon={
+      <Icon
+        containerStyle={{ backgroundColor: '#A4C8F0' }}
+        icon={{
+          type: 'ionicon',
+          name: 'md-information-circle',
+        }}
+      />
+    }
+  />
+       
+
+      </List>
 
           
          
@@ -201,3 +346,28 @@ export default class Parametre extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  scroll: {
+    backgroundColor: 'white',
+  },
+  userRow: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    paddingBottom: 6,
+    paddingLeft: 15,
+    paddingRight: 15,
+    paddingTop: 6,
+  },
+  userImage: {
+    marginRight: 12,
+  },
+  listContainer: {
+    marginBottom: 0,
+    marginTop: 0,
+    borderTopWidth: 0,
+  },
+  listItemContainer: {
+    borderBottomColor: '#ECECEC',
+  },
+})

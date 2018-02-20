@@ -1,16 +1,20 @@
 import React, { Component } from 'react';
-import {View ,Text,ImageBackground, Alert , StyleSheet,StatusBar,Image , BackHandler,AsyncStorage, TextInput} from 'react-native'
+import {View ,Text,ImageBackground, TouchableOpacity , Alert , StyleSheet,StatusBar,Image , BackHandler,AsyncStorage, TextInput} from 'react-native'
 import {Button , Card , CardItem,Form ,Item,Input, Label, Body , Container , Spinner, Content , Header} from 'native-base'
 import loginform from './loginform'
 import Tab from './Tab'
 import firebase from 'firebase'
 import FirebaseConfig from './FirebaseConfig'
 import {LoginManager , AccessToken} from 'react-native-fbsdk'
+import { SocialIcon } from 'react-native-elements'
+
 const FBSDK = require('react-native-fbsdk');
 const {
   LoginButton,
 } = FBSDK;
 import Expo from 'expo'
+import ElevatedView from 'react-native-elevated-view'
+
 export default class Connexion extends Component {
 
     componentWillMount() {
@@ -20,6 +24,7 @@ export default class Connexion extends Component {
            
     }
    
+    
     async  logIn() {
         const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync('1551784921556987', {
             permissions: ['public_profile'],
@@ -72,7 +77,7 @@ export default class Connexion extends Component {
       }
       renderButtonOrSpinner() {
           if (this.state.loading) {
-              return <Spinner />;    
+              return <Spinner color="#F77062" />;    
           }
           
       }
@@ -109,12 +114,12 @@ export default class Connexion extends Component {
                 flex: 1,
                 flexDirection: 'column',
                 justifyContent: 'space-between',
-                backgroundColor: '#F77062'
+                backgroundColor: 'white'
               }}>
                 <View style={{width: '100%', height: 200,  alignItems:"center" , justifyContent:"center"}}>
                 
-                    <Image source={require('./img/man.png')} style={{marginTop : 10,width : 120 , height : 120}}/>
-                    <Text style={styles.connectezVous}>  Connectez vous </Text>
+                    <Image source={require('./img/sunulogo.png')} style={{width : 70 , height : 70}}/>
+                    <Text style={styles.connectezVous}> S U N U C O U T U R E</Text>
                    
                 </View>
 
@@ -125,27 +130,46 @@ export default class Connexion extends Component {
 
                 <View style={{width: '100%', height: 300  , alignItems:"center" , justifyContent:"center"}}>
 
-               <View style={{width:'80%',height:'30%', backgroundColor:'white'}}>
-              
-                <TextInput style = {{width:'100%' , height:'50%' , marginLeft:5}}
+             
+
+               
+               <ElevatedView
+                 elevation={30}
+                 style={styles.stayElevated}
+               >
+
+               <TextInput style = {{width:'100%' , height:'50%' , marginLeft:5}}
                 underlineColorAndroid ='transparent'
                 placeholder = "Email "
-                placeholderTextColor = "#F77062"
+                
                 autoCapitalize = "none"
                 onChangeText={email => this.setState({ email })} />
 
+                <View
+                style={{
+                  borderBottomColor: '#c0bebd',
+                  borderBottomWidth: 1,
+                }}
+              />
               
                <TextInput style = {{width:'100%', height:'50%' , marginLeft:5}}
                underlineColorAndroid ='transparent'
                 placeholder = "Mot de passe "
-                placeholderTextColor = "#F77062"
+                
                 autoCapitalize = "none"
                 secureTextEntry = {true}
                 onChangeText={password => this.setState({ password })}/>
+
+
+               </ElevatedView>
+
+             
+
+                
               
                
                 
-                </View>
+                
               
                 <Button transparent style={{marginLeft:230}} onPress={() => this.props.navigation.navigate("Forgot")}>
                     <Text style={{fontStyle:"italic"}}>Mot de passe oublié ?</Text>
@@ -160,31 +184,45 @@ export default class Connexion extends Component {
                 <Text style={styles.text}> Connexion </Text>
         
                 </Button>
+
+
+
+
                 
                  
       
 
-                 <View style={{marginTop : 50}}>
-                <Button style={styles.google}  onPress={this.signInWithGoogleAsync.bind(this)} >
-                    
-                <Text style={styles.textgoogle}>  Google </Text>
-        
-                </Button>
-                    
-                <Button style={styles.facebook} onPress={this.logIn.bind(this)}>
-                    
-                <Text style={styles.textgoogle}> Facebook </Text>
-        
-                </Button>
+                 <View style={{flexDirection : 'row' , marginTop : 20}}>
+                 <TouchableOpacity  onPress={() => this.props.navigation.navigate("Phone")}>
 
+                <Image source={require('./img/ph.png')} style={{width : 40 , height : 40}}/>
+                </TouchableOpacity>
+                
+                <TouchableOpacity  onPress={this.logIn.bind(this)}>
+
+                <Image source={require('./img/f.png')} style={{marginLeft:16,width : 40 , height : 40}}/>
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={this.signInWithGoogleAsync.bind(this)}>
+
+                <Image source={require('./img/g.png')} style={{marginLeft:16,width : 40 , height : 40}}/>
+                </TouchableOpacity>
+ 
+
+                
+                
+                    
+                
                  </View>
+
+                 
                
                 
                </View>
 
 
 
-                <View style={{width: '100%', height: 50, backgroundColor: 'steelblue' , alignItems:"center" , justifyContent:"center"}}>
+                <View style={{width: '100%', height: 50, backgroundColor: '#F77062' , alignItems:"center" , justifyContent:"center"}}>
 
                 <Button transparent style={{alignSelf : "center"}} onPress={() => this.props.navigation.navigate("Inscription")}>
                 <Text style={{fontWeight : "bold" , fontSize : 15 , color : "white"}} >Pas encore de compte , Inscription </Text>
@@ -204,17 +242,34 @@ const styles  = StyleSheet.create({
         flex : 1 ,
         justifyContent:'center',
         alignItems : 'center',
-        backgroundColor: '#F77062'
+        backgroundColor: 'white'
     },
-     connectezVous :{
+    containerel : {
+      flex: 1,
+      backgroundColor: 'white'
+    },
+    stayElevated: {
+      width: '90%',
+      height: '40%',
+      margin: 5,
+      backgroundColor: 'white',
+      shadowColor: 'grey',
+      shadowOffset: {
+        width: 0,
+        height: 7
+      },
+      shadowRadius: 10,
+      shadowOpacity: 2.0
+    },
+    connectezVous :{
       
-        marginTop:30,
-        fontSize: 30,
-        fontWeight: "bold",
-       
-        textAlign: "center",
-        color: "#ffffff"
-    },
+      marginTop:10,
+      fontSize: 18,
+      fontWeight:'bold',
+     
+      textAlign: "center",
+      color: "#F77062"
+  },
     authentification : {
    
 	marginTop : 100,
@@ -225,16 +280,23 @@ const styles  = StyleSheet.create({
 	color: "#ffffff"
     },
     button: {
-        marginTop:15,
-        borderRadius: 50,         // Rounded border
-        borderWidth: 2,           // 2 point border widht
-        borderColor: '#FFFFFF',   // White colored border
-        paddingHorizontal: 122,    // Horizontal padding
-        paddingVertical: 10,      // Vertical padding
-        backgroundColor:"white",
-        alignSelf:'center'
-         
-      },
+      marginTop:5,
+      borderRadius: 50,         // Rounded border
+      borderWidth: 2,           // 2 point border widht
+      borderColor: '#F77062',   // White colored border
+      paddingHorizontal: 122,    // Horizontal padding
+      paddingVertical: 10,      // Vertical padding
+      backgroundColor:"#F77062",
+      alignSelf:'center',
+      shadowColor: '#000000',
+    shadowOffset: {
+      width: 0,
+      height: 3
+    },
+    shadowRadius: 5,
+    shadowOpacity: 1.0
+       
+    },
       google: {
         marginTop:15,
         borderRadius: 50,         // Rounded border
@@ -259,9 +321,9 @@ const styles  = StyleSheet.create({
       },
       // Button text
       text: {
-        color: '#F77062',
+        color: 'white',
         fontWeight: 'bold',
-        fontSize: 15,
+       
         
       },
       textgoogle: {

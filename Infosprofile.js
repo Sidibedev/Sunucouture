@@ -1,34 +1,91 @@
 import React, { Component } from 'react';
 import { Container, Text, Button , Header, Content, Left ,Form, Item, Input,Icon, Label , Body , Right,Title } from 'native-base';
-import {StyleSheet, AsyncStorage} from 'react-native'
+import {StyleSheet, AsyncStorage , Image} from 'react-native'
 import firebase from 'firebase'
+import { ImagePicker} from 'expo';
+import axios from 'axios'
 export default class Infosprofile extends Component {
 
-    state = { name :'' };
-
-    update() {
-
-
-        
-        var user = firebase.auth().currentUser;
-
-        user.updateProfile({
-          displayName: this.state.name,
-    
-          
-        }).then(function() {
-          alert('votre profil a été mis a jour')
-          
-
-        }).catch(function(error) {
-         alert(error)
-        });
-
-        this.props.navigation.navigate("Menuprincipal")
-       
-
+   
+  constructor(){
+    super()
+    this.state = {
+     
+      emailUser:firebase.auth().currentUser.email,
+      nom :'',
+      prenom:'',
+      tel : '',
+      adresse : '',
+      avatar :null,
+      userId : '',
+      currentNom : '',
+      currentPrenom:'',
+      currentTel:'',
+      currentAdresse :'',
+      currentAvatar:''
+     
     }
+   
+   this.getId()
+   
+
+  }
+
+  
+
+  _pickImageUp = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      this.setState({ avatar: result.uri });
+    }
+  };
+
+  getId(){
+
+    axios.get('https://sunucouture-api-agileague.herokuapp.com/api/tailleurs/findOne?filter[where][email]='+this.state.emailUser) // Fetching info of hospital
+    .then((response) => {
+      this.setState({userId : response.data.id})
+      axios.get('https://sunucouture-api-agileague.herokuapp.com/api/tailleurs/'+response.data.id)
+    .then((response) => {
+
+      this.setState({currentNom : response.data.nom  , currentPrenom : response.data.prenom  , currentAdresse : response.data.adresse , currentTel : response.data.tel , currentAvatar : response.data.avatar  })
+
+      console.log(response.data)
+    })
+    
+    }) 
+    
+  }
+
+     
+  save(){
+    var _this = this
+     axios.put('https://sunucouture-api-agileague.herokuapp.com/api/tailleurs/'+this.state.userId , {
+      "nom": this.state.nom,
+      "prenom": this.state.prenom,
+      "adresse": this.state.adresse,
+      "tel": this.state.tel,
+      "avatar": this.state.avatar,
+      "email" : this.state.emailUser
+      
+     })
+     .then(function (response) {
+      alert('Profil mis a jour')
+      _this.props.navigation.navigate("Profil")
+      
+    })
+     
+  }
+     
+    
   render() {
+    let {avatar} = this.state
     return (
       <Container>
       <Header>
@@ -46,21 +103,60 @@ export default class Infosprofile extends Component {
    </Header>
         <Content>
           <Form>
-           
-
-            <Item fixedLabel>
-            <Label>Renseigner votre nom </Label>
-            <Input onChangeText = {name => this.setState({ name })}/>
+          <Item disabled>
+          <Label style={{color : "blue"}}> Email </Label>
+          <Input disabled placeholder={this.state.emailUser}/>
+          <Icon name='information-circle' />
           </Item>
 
-       
+            <Item floatingLabel>
+            <Label style={{color : "blue"}}> Nom </Label>
+            <Input   onChangeText = {nom => this.setState({ nom })}/>
+          </Item>
+
+
+          <Item floatingLabel>
+          <Label style={{color : "blue"}}> Prenom </Label>
+          <Input  onChangeText = {prenom => this.setState({ prenom })}/>
+        </Item>
+
+
+
+        <Item floatingLabel>
+        <Label style={{color : "blue"}}> Adresse </Label>
+        <Input  onChangeText = {adresse => this.setState({ adresse })}/>
+        </Item>
+
+
+
+
+      <Item floatingLabel>
+      <Label style={{color : "blue"}}> Telephone </Label>
+      <Input  onChangeText = {tel => this.setState({ tel })}/>
+      </Item>
+
+
+
+      <Item inlineLabel>
+      <Label style={{color : "blue"}}> Avatar </Label>
+      <Button transparent info onPress={this._pickImageUp}>
+        <Text> attacher une photo de profil</Text> 
+       </Button>
+      </Item>
+
+
+      {avatar &&
+        <Image source={{ uri: avatar }} style={{ width: 100, height: 100 , paddingTop : 12 }} />}
+
+
             
           </Form>
+         
 
-          <Button style={styles.button} onPress={this.update.bind(this)} >
+          <Button style={styles.button} onPress={this.save.bind(this)} >
                     
-                <Text style={styles.text}> Mettre a jour
-                 </Text>
+                <Text style={styles.text}> Valider </Text>
+
         
          </Button>
         </Content>
@@ -98,7 +194,7 @@ const styles  = StyleSheet.create({
         borderRadius: 50,         // Rounded border
         borderWidth: 2,           // 2 point border widht
         borderColor: '#FFFFFF',   // White colored border
-        paddingHorizontal: 122,    // Horizontal padding
+        paddingHorizontal: 100,    // Horizontal padding
         paddingVertical: 10,      // Vertical padding
         backgroundColor:"#F77062",
         alignSelf:'center'
@@ -129,8 +225,7 @@ const styles  = StyleSheet.create({
       // Button text
       text: {
         color: 'white',
-        fontWeight: 'bold',
-        fontSize: 15,
+       
         
       },
       textgoogle: {

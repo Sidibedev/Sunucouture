@@ -3,7 +3,7 @@
     "name" : "SunuCouture",
     "slug": "SunuCouture",
     "description" : "Votre boutique de couture dans votre smartphone",
-    "icon" : "./img/sauver+.png",
+    "icon" : "./img/sunulogo.png",
     "facebookScheme" : "fb1551784921556987",
     "loading" : {
       "backgroundImage" : "./img/sauver+.png"

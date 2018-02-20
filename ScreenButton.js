@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,         // Rounded border
     borderWidth: 2,           // 2 point border widht
     borderColor: '#FFFFFF',   // White colored border
-    paddingHorizontal: 50,    // Horizontal padding
+    paddingHorizontal: 30,    // Horizontal padding
     paddingVertical: 10,      // Vertical padding
     backgroundColor:"white",
     marginLeft : 12

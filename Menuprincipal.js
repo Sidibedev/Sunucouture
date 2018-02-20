@@ -5,19 +5,39 @@ import getTheme from './native-base-theme/components';
 import platform from './native-base-theme/variables/platform';
 import firebase from 'firebase'
 import Parametre from './Parametre'
-
+import axios from 'axios'
+import AwesomeAlert from 'react-native-awesome-alerts';
 
 export default class Menuprincipal extends Component {
 
     state = {name : ''}
 
-    componentDidMount() {
-        firebase.auth().onAuthStateChanged( (user) => {
-            this.setState({name : user.displayName})
+    // componentDidMount() {
+    //     firebase.auth().onAuthStateChanged( (user) => {
+    //         this.setState({name : user.displayName})
 
-        })
+    //     })
+    
         
-    }
+    // }
+
+    constructor(props) {
+        super(props);
+        this.state = { showAlert: false };
+      };
+    
+      showAlert = () => {
+        this.setState({
+          showAlert: true
+        });
+      };
+    
+      hideAlert = () => {
+        this.setState({
+          showAlert: false
+        });
+      };
+     
 
 
     rendertemplate() {
@@ -29,6 +49,8 @@ export default class Menuprincipal extends Component {
                 </View>
             )
         }else {
+
+            const {showAlert} = this.state;
 
 
         return (
@@ -93,38 +115,42 @@ export default class Menuprincipal extends Component {
                     
                     <View style={styles.container}>
 
-                        <View style={styles.box}>
-                        <Image source={require('./img/iconemesure.png')} style={{width : 80 , height : 80}}/>
-                         <Text style={styles.textmenu}> Mensuration</Text> 
-                         </View>
+                        <TouchableOpacity style={styles.box}   onPress={() => {
+                            this.showAlert();
+                          }}>
+                        <Image source={require('./img/ogmes.png')} style={{width : 90 , height : 90}}/>
+                         <Text style={styles.textmenu}>Prendre une mesure</Text> 
+                        </TouchableOpacity>
 
-                         <View style={styles.box}>
-                         <Image source={require('./img/iconecommande.png')} style={{width : 80 , height : 80}}/>
+                         <TouchableOpacity style={styles.box}>
+                         <Image source={require('./img/comog.png')} style={{width : 80 , height : 80}}/>
                          <Text style={styles.textmenu}>  Commandes </Text> 
-                         </View>
+                         </TouchableOpacity>
 
 
-                         <View style={styles.box}>
-                         <Image source={require('./img/iconeclients.png')} style={{width : 80 , height : 80}}/>
+                         <TouchableOpacity style={styles.box} onPress={() => this.props.navigation.navigate("Client")}>
+                         <Image source={require('./img/ogclient.png')} style={{width : 80 , height : 80}}/>
                          <Text style={styles.textmenu}>Clients</Text> 
-                         </View>
-
+                         </TouchableOpacity>
+                         <TouchableOpacity onPress={() => this.props.navigation.navigate("Allcatalogues")}>
                          <View style={styles.box}>
-                         <Image source={require('./img/iconecata.png')} style={{width : 80 , height : 80}}/>
+                         <Image source={require('./img/cata.png')} style={{width : 80 , height : 80}}/>
                          <Text style={styles.textmenu}> Catalogue </Text> 
                          </View>
+                         </TouchableOpacity>
 
 
-                         <View style={styles.box}>
-                         <Image source={require('./img/iconeagenda.png')} style={{width : 80 , height : 80}}/>
+
+                         <TouchableOpacity style={styles.box}>
+                         <Image source={require('./img/agen.png')} style={{width : 80 , height : 80}}/>
                          <Text style={styles.textmenu}> Agenda </Text> 
-                         </View>
+                         </TouchableOpacity>
                          
 
                         
                          <TouchableOpacity onPress={() => this.props.navigation.navigate("Parametre")}>
                          <View style={styles.box}>
-                         <Image source={require('./img/iconeparam.png')} style={{width : 80 , height : 80}}/>
+                         <Image source={require('./img/param.png')} style={{width : 80 , height : 80}}/>
                          <Text style={styles.textmenu}> Parametres </Text> 
                          </View>
 
@@ -135,8 +161,33 @@ export default class Menuprincipal extends Component {
                          </View>
 
 
+                        
+
            </ScrollView>
 
+
+           <AwesomeAlert
+           show={showAlert}
+           showProgress={false}
+           title="Prendre une nouvelle mesure"
+           
+           closeOnTouchOutside={true}
+           closeOnHardwareBackPress={true}
+           showCancelButton={true}
+           showConfirmButton={true}
+           cancelText="Nouveau client"
+           confirmText="Client existant"
+           confirmButtonColor="#F77062"
+           onCancelPressed={() => {
+             this.hideAlert();
+             this.props.navigation.navigate("Ajoutclient")
+           }}
+           onConfirmPressed={() => {
+             this.hideAlert();
+             this.props.navigation.navigate("Clientselect")
+
+           }}
+         />
 
                 
        
@@ -172,6 +223,13 @@ const styles  = StyleSheet.create({
         justifyContent : 'center',
         alignItems : 'center',
         height:140,
+        shadowColor: '#000000',
+    shadowOffset: {
+      width: 0,
+      height: 3
+    },
+    shadowRadius: 5,
+    shadowOpacity: 1.0
        
        
 
@@ -233,8 +291,10 @@ const styles  = StyleSheet.create({
         fontWeight : 'bold'
     },
     textmenu : {
-        fontSize : 20,
-        fontWeight:'bold'
+        marginTop : 10,
+        fontSize : 18,
+        fontWeight:'bold',
+        color : '#1d3461'
         
        
     }
