@@ -47,7 +47,8 @@ export default class Clientselect extends Component {
           telephone :'',
           refreshing : false,
           showAlert: false ,
-          loading : false
+          loading : false,
+          id : '',
           
     
          
@@ -85,7 +86,7 @@ export default class Clientselect extends Component {
         axios.get('https://sunucouture-api-agileague.herokuapp.com/api/clients?filter[where][idTailleur]='+response.data.id) // Fetching info of hospital
         .then((response1) => {
           
-          this.setState({clients : response1.data , loading : false})
+          this.setState({clients : response1.data , loading : false , id : response1.data.id})
 
           
            
@@ -119,15 +120,22 @@ export default class Clientselect extends Component {
         return (
             <Container style={{backgroundColor : "white"}}>
             
-            <Header searchBar rounded style={{backgroundColor : '#F77062'}}>
-            <Item>
-              <Icon name="ios-search" />
-              <Input  placeholder="recherche client ...." />
-              <Icon name="ios-people" />
-            </Item>
-            <Button transparent>
-              <Text style={{color : "white"}}>Rechercher</Text>
+            <Header style={{backgroundColor : '#F77062'}}>
+            <Left>
+            <Button transparent onPress={() => this.props.navigation.goBack()}>
+           <Text style={{color:"white"}}> Back </Text>
             </Button>
+          </Left>
+          <Body>
+            <Title style={{color : "white"}}>Clients</Title>
+          </Body>
+          <Right>
+            
+            <Button transparent onPress={() => this.props.navigation.navigate("searchClientSelect")} >
+              <Icon name="search" style={{color : "white"}} />
+            </Button>
+
+            </Right>
           </Header>
                    
             
@@ -145,7 +153,7 @@ export default class Clientselect extends Component {
 
               return (
 
-                <TouchableOpacity onPress={() => this.props.navigation.navigate("selecType" , {idClient : item.id})} style={{paddingLeft : 12 , flexDirection:'row' , marginTop : 10}} >
+                <TouchableOpacity onPress={() => this.props.navigation.navigate("selecType" , {idClient : item.id})} style={{paddingLeft : 12 , flexDirection:'row' , marginTop : 15}} >
 
 
                 <Image source={require('./img/user.png')} style={{width : 30 , height : 30}}/>

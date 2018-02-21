@@ -41,10 +41,16 @@ class takemesure extends Component {
             client:'',
             type : '',
             mesures : [],
-            valeurMensu : '',
-            nomMensu : '',
+            mensu : {
+
+              nom : "",
+              valeur :""
+            },
+        
             date : new Date()
+
         }
+        console.log(this.props.navigation.state.params.idClient)
     }
     componentDidMount() {
 
@@ -69,6 +75,10 @@ class takemesure extends Component {
         })
 
     }
+
+    handleQuerySearch = function(e) {
+       console.log(e.nativeEvent.text);
+    }
     render() {
 
        console.log(this.state.mesures)
@@ -85,7 +95,7 @@ class takemesure extends Component {
                 </Button>
               </Left>
               <Body>
-                <Title>take mesure</Title>
+                <Title style={{color : "white"}}>take mesure</Title>
               </Body>
               <Right />
               
@@ -102,7 +112,7 @@ class takemesure extends Component {
 
 
 
-              <ListItem
+              <ListItem style={{marginLeft : 15}}
                  title={  this.state.client.prenom +' ' +this.state.client.nom + ' '+ this.state.client.telephone}
                  
                 
@@ -110,7 +120,7 @@ class takemesure extends Component {
                  leftIcon={
                    <Icon
                      raised
-                     containerStyle={{ backgroundColor: '#F77062' }}
+                     containerStyle={{ backgroundColor: '#3b5998' }}
                      icon={{
                        name: 'md-information-circle',
                        type:'ionicon'
@@ -123,7 +133,7 @@ class takemesure extends Component {
                <InfoText text="Type d'habit "/>
 
 
-               <ListItem
+               <ListItem style={{marginLeft : 15}}
                  title={  this.state.type.nom }
                  
                 
@@ -131,7 +141,7 @@ class takemesure extends Component {
                  leftIcon={
                    <Icon
                      raised
-                     containerStyle={{ backgroundColor: '#F77062' }}
+                     containerStyle={{ backgroundColor: '#3b5998' }}
                      icon={{
                        name: 'entypo',
                        type:'light-bulb'
@@ -145,32 +155,33 @@ class takemesure extends Component {
 
                <InfoText text="Ajouter les mesures du client "/>
 
-               <Elevated elevation={10} style={{marginLeft : 10 ,marginTop : 15,width:'90%',marginTop : 15, height:'50%',flex:1 , alignSelf : 'center'}}>
+               <Elevated elevation={10} style={{marginLeft : 10 ,marginTop : 15,width:'90%',marginTop : 15, height:'50%',flex:1 , alignSelf : 'center' , marginBottom : 10}}>
                  
 
 
 
-               {this.state.mesures.map((l , i) => {
+                    {this.state.mesures.map((l , i) => {
 
-                return (
-     <View style={{flexDirection:'row' , marginTop : 10 , marginLeft : 15}} key={i}>
+                              return (
 
-    <Text style={{ marginTop : 13 , fontSize : 15}}> {l} : </Text>
+                                    <View style={{flexDirection:'row' , marginTop : 10 , marginLeft : 15}} key={i}>
 
-    <TextInput style={{ marginTop :13 , marginLeft : 10 , width : '40%'}}
-    underlineColorAndroid ='transparent'
-    placeholder = "Entrer une valeur"
-    autoCapitalize = "none"
-    autoFocus
-    placeholderTextColor='#F77062'
-    selectionColor='#F77062'
-    onChangeText={valeurMensu => this.setState({ nomtype })} />
+                                    <Text style={{ marginTop : 13 , fontSize : 15}}> {l} : </Text>
 
-    </View>
-                )
+                                    <TextInput style={{ marginTop :13 , marginLeft : 10 , width : '40%'}}
+                                    underlineColorAndroid ='transparent'
+                                    placeholder = "Entrer une valeur"
+                                    autoCapitalize = "none"
+                                    autoFocus
+                                    placeholderTextColor='#3b5998'
+                                    selectionColor='#F77062'
+                                    onChange={this.handleQuerySearch} />
 
-               })}
-               
+                                    </View>
+                              )
+
+                  })}
+                            
                     
                   
                
@@ -185,7 +196,7 @@ class takemesure extends Component {
 
 
 
-               <View style={{marginTop : 15 , alignItems : 'center' , justifyContent : 'center' , flex : 1}}>
+               <View style={{marginTop : 15 , marginLeft : 15}}>
 
 
 
@@ -213,8 +224,8 @@ class takemesure extends Component {
               fontSize : 20
           },
           dateText : {
-              fontSize : 20,
-              color : "#F77062"
+              fontSize : 15,
+              color : "#3b5998"
           }
           // ... You can check the source to find the other keys.
         }}
@@ -273,10 +284,10 @@ const styles = StyleSheet.create({
         marginTop:25,
         borderRadius: 50,         // Rounded border
         borderWidth: 2,           // 2 point border widht
-        borderColor: '#F77062',   // White colored border
+        borderColor: '#3b5998',   // White colored border
         paddingHorizontal: 122,    // Horizontal padding
         paddingVertical: 10,      // Vertical padding
-        backgroundColor:"#F77062",
+        backgroundColor:"#3b5998",
         alignSelf:'center',
         shadowColor: '#000000',
       shadowOffset: {

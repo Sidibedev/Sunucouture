@@ -30,15 +30,15 @@ const styles = StyleSheet.create({
   button: {
     borderRadius: 50,         // Rounded border
     borderWidth: 2,           // 2 point border widht
-    borderColor: '#FFFFFF',   // White colored border
+    borderColor: '#3b5998',   // White colored border
     paddingHorizontal: 30,    // Horizontal padding
     paddingVertical: 10,      // Vertical padding
-    backgroundColor:"white",
+    backgroundColor:"#3b5998",
     marginLeft : 12
   },
   // Button text
   text: {
-    color: '#F77062',
+    color: 'white',
     fontWeight: 'bold',
     
   },

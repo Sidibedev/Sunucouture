@@ -47,16 +47,21 @@ export default class Client extends Component {
           telephone :'',
           refreshing : false,
           showAlert: false ,
-          loading : false
+          loading : false,
+          num :''
           
     
          
         }
-        this.fetchClient() 
+       
        
     
       }
 
+
+      componentDidMount () {
+        this.fetchClient() 
+      }
 
       renderButtonOrSpinner() {
         if (this.state.loading) {
@@ -116,21 +121,33 @@ export default class Client extends Component {
 
       }
 
+      searchClient(event){
+        let searchText = event.nativeEvent.text;
+        this.setState({num : searchText});
+
+      }
 
     render() {
     
         return (
             <Container style={{backgroundColor : "white"}}>
             
-            <Header searchBar rounded style={{backgroundColor : '#F77062'}}>
-            <Item>
-              <Icon name="ios-search" />
-              <Input  placeholder="recherche client ...." />
-              <Icon name="ios-people" />
-            </Item>
-            <Button transparent>
-              <Text style={{color : "white"}}>Rechercher</Text>
+            <Header style={{backgroundColor : '#F77062'}}>
+            <Left>
+            <Button transparent onPress={() => this.props.navigation.goBack()}>
+           <Text style={{color:"white"}}> Back </Text>
             </Button>
+          </Left>
+          <Body>
+            <Title style={{color : "white"}}>Clients</Title>
+          </Body>
+          <Right>
+            
+            <Button transparent onPress={() => this.props.navigation.navigate("searchClient")} >
+              <Icon name="search" style={{color : "white"}} />
+            </Button>
+
+            </Right>
           </Header>
                    
             

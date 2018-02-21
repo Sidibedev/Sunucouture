@@ -120,7 +120,8 @@ export default class selecType extends Component {
             onRefresh={this.handleRefresh}
             renderItem={({item} ) => {
                 return (
-                    <Button transparent onPress={() => this.props.navigation.navigate("takemesure" , {idType : item.id  , idClient : this.props.navigation.state.params.idClient})}>
+                    <Button transparent warning onPress={() => this.props.navigation.navigate("takemesure" , {idType : item.id  , idClient : this.props.navigation.state.params.idClient})}>
+                    <Image source={require('./img/clothes.png')} style={{width : 30 , height : 30}}/>
                     <Text> {item.nom} </Text>
                     </Button>
 

@@ -70,7 +70,7 @@ export default class Catalogue extends Component {
 
             {this.state.catalogues.map((l, i) => {return (
 
-                <TouchableOpacity key={i} style={styles.box} onPress={() => this.props.navigation.navigate("Model")}>
+                <TouchableOpacity key={i} style={styles.box} onPress={() => this.props.navigation.navigate("Model" ,  {idcatalogue : l.id})}>
                 {l.imgUrl == "null" ? <Image source={require('./img/al1.png')} style={{width : 100 , height : 100}}/> :  <Image source={{ uri: l.imgUrl }}  style={{width : 100 , height : 100}} /> }
                 
                 <Text style={{color:"#686868" , fontWeight : 'bold' , marginTop : 5}}>{l.nom}</Text>

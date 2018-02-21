@@ -122,7 +122,7 @@ export default class Menuprincipal extends Component {
                          <Text style={styles.textmenu}>Prendre une mesure</Text> 
                         </TouchableOpacity>
 
-                         <TouchableOpacity style={styles.box}>
+                         <TouchableOpacity style={styles.box} onPress={() => this.props.navigation.navigate("Commande")}> 
                          <Image source={require('./img/comog.png')} style={{width : 80 , height : 80}}/>
                          <Text style={styles.textmenu}>  Commandes </Text> 
                          </TouchableOpacity>
@@ -141,7 +141,7 @@ export default class Menuprincipal extends Component {
 
 
 
-                         <TouchableOpacity style={styles.box}>
+                         <TouchableOpacity style={styles.box}  onPress={() => this.props.navigation.navigate("Agendas")}>
                          <Image source={require('./img/agen.png')} style={{width : 80 , height : 80}}/>
                          <Text style={styles.textmenu}> Agenda </Text> 
                          </TouchableOpacity>
@@ -178,9 +178,10 @@ export default class Menuprincipal extends Component {
            cancelText="Nouveau client"
            confirmText="Client existant"
            confirmButtonColor="#F77062"
+           cancelButtonColor="#3b5998"
            onCancelPressed={() => {
              this.hideAlert();
-             this.props.navigation.navigate("Ajoutclient")
+             this.props.navigation.navigate("Ajoutclientmesure")
            }}
            onConfirmPressed={() => {
              this.hideAlert();

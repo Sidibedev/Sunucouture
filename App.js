@@ -35,10 +35,29 @@ import Client from './Client'
 import Clientselect from './Clientselect'
 import selecType from './selecType'
 import takemesure from './takemesure'
- 
+import Commande from './Commande'
+import searchClient from './searchClient'
+import searchClientSelect from './searchClientSelect'
+import Agendas from './Agendas' 
+import Ajoutclientmesure from './Ajoutclientmesure'
 const App =  StackNavigator({
 Allcatalogues : {
   screen : Allcatalogues
+},
+Ajoutclientmesure : {
+  screen : Ajoutclientmesure
+},
+Agendas : {
+  screen : Agendas
+},
+searchClientSelect : {
+  screen : searchClientSelect
+},
+searchClient : {
+  screen : searchClient
+},
+Commande : {
+  screen : Commande
 },
 takemesure : {
   screen : takemesure
