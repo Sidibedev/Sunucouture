@@ -46,18 +46,62 @@ class takemesure extends Component {
               nom : "",
               valeur :""
             },
+            emailUser:firebase.auth().currentUser.email,
+            userid: '',
         
             date : new Date()
 
         }
         console.log(this.props.navigation.state.params.idClient)
+        console.log(this.props.navigation.state.params.idType)
     }
     componentDidMount() {
 
         this.fetchClient()
         this.fetchType()
+        this.fetchIdtailleur()
+
     }
 
+    fetchIdtailleur(){
+
+      axios.get('https://sunucouture-api-agileague.herokuapp.com/api/tailleurs/findOne?filter[where][email]='+this.state.emailUser) // Fetching info of hospital
+      .then((response) => {
+        this.setState({userid : response.data.id})
+     
+         
+      }) 
+    
+
+    }
+
+
+    commander() {
+
+
+      var _this = this
+      axios.post('https://sunucouture-api-agileague.herokuapp.com/api/commandes', {
+        "date":""+this.state.date+"",
+        "idClient":""+this.props.navigation.state.params.idClient+"",
+        "idTypeHabit":""+this.props.navigation.state.params.idType+"",
+        "idTailleur": ""+this.state.userid+"",
+        "statut":false,
+        "nomClient":""+this.state.client.nom+"",
+        "prenomClient":""+this.state.client.prenom+"",
+        "nomType":""+this.state.type.nom+"",
+
+
+      })
+      .then(function (response) { 
+        alert('Commande bien ajouté')
+       
+        
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
+    }
 
     fetchClient() {
 
@@ -76,13 +120,9 @@ class takemesure extends Component {
 
     }
 
-    handleQuerySearch = function(e) {
-       console.log(e.nativeEvent.text);
-    }
     render() {
 
-       console.log(this.state.mesures)
-        
+     
         return (
            
                 <Container style={{backgroundColor : "white"}}>
@@ -237,7 +277,7 @@ class takemesure extends Component {
 
 
 
-               <Button style={styles.button}>
+               <Button style={styles.button} onPress={this.commander.bind(this)}>
                     
                 <Text style={styles.text}> Valider </Text>
         

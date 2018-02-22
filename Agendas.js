@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View , StyleSheet , Image } from 'react-native';
-
+import Prompt from 'react-native-prompt';
 import {
   Container,
   Header,
@@ -43,7 +43,9 @@ export default class Agendas extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: {}
+      items: {},
+      promptVisible : false,
+      message:"pas de rendez vous pour cette date"
     };
   }
 
@@ -106,6 +108,19 @@ export default class Agendas extends Component {
           />
     
 
+          <Prompt
+    title="Wrtie something"
+    placeholder="Ajouter un rendez vous"
+    
+    visible={ this.state.promptVisible }
+    onCancel={ () => this.setState({
+      promptVisible: false,
+      message: "You cancelled"
+    }) }
+    onSubmit={ (value) => this.setState({
+      promptVisible: false,
+      message: `RDV ajouté avec succéss`
+    }) }/>
 
             </Content>
 
@@ -148,9 +163,9 @@ export default class Agendas extends Component {
     renderEmptyDate() {
       return (
         <View style={styles.emptyDate}>
-        <Text>Pas de rendez vous a cette date!</Text>
+        <Text>{this.state.message}</Text>
 
-        <Button transparent info>
+        <Button transparent info onPress={() => this.setState({promptVisible : true})}>
           <Text> Ajouter </Text>
          </Button>
         </View>

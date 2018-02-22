@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View , FlatList, Animated , Image , StyleSheet, TouchableOpacity} from 'react-native';
-import { Container, Spinner , Right, Button,SwipeRow, Header, Content, List,Icon, Title, ListItem, Thumbnail, Text, Body , Left } from 'native-base';
+import { Container, Spinner , Right, Button,SwipeRow, Header, Content, List,Icon, Title,Toast , ListItem, Thumbnail, Text, Body , Left } from 'native-base';
 import ajoutypehabit from './ajoutypehabit'
 import axios from 'axios'
 import firebase from 'firebase'
@@ -14,8 +14,8 @@ export default class selecType extends Component {
 
   //Constructeur
 
-  constructor(){
-    super()
+  constructor(props){
+    super(props)
     this.state = {
       typehabit : '',
       emailUser:firebase.auth().currentUser.email,
@@ -27,13 +27,19 @@ export default class selecType extends Component {
 
      
     }
+
+    console.log(this.props.navigation.state.params.idClient)
    
    
 
   }
 
   componentDidMount() {
-
+    Toast.show({
+      text: 'Selectionner un type dhabit!',
+      position: 'bottom',
+      buttonText: 'ok'
+    })
     this.fetchType() 
   }
 
@@ -78,7 +84,7 @@ export default class selecType extends Component {
 
   renderButtonOrSpinner() {
     if (this.state.loading) {
-        return <Spinner color ='blue' />;    
+        return <Spinner color="#F77062" />;    
     }
     
 }

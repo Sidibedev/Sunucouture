@@ -61,7 +61,7 @@ export default class Clientselect extends Component {
 
       renderButtonOrSpinner() {
         if (this.state.loading) {
-            return <Spinner />;    
+            return <Spinner color="#F77062" />;    
         }
         
     }
@@ -86,9 +86,9 @@ export default class Clientselect extends Component {
         axios.get('https://sunucouture-api-agileague.herokuapp.com/api/clients?filter[where][idTailleur]='+response.data.id) // Fetching info of hospital
         .then((response1) => {
           
-          this.setState({clients : response1.data , loading : false , id : response1.data.id})
+          this.setState({clients : response1.data , loading : false})
 
-          
+         
            
     
            
@@ -116,7 +116,7 @@ export default class Clientselect extends Component {
 
 
     render() {
-    console.log(this.state.clients)
+   
         return (
             <Container style={{backgroundColor : "white"}}>
             
