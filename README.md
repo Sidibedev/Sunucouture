@@ -1,3 +1,7 @@
+![alt text](https://github.com/Sidibedev/Sunucouture/blob/master/Simulator%20Screen%20Shot%20-%20iPhone%206s%20Plus%20-%202018-02-20%20at%2022.22.51.png)
+
+
+
 This project was bootstrapped with [Create React Native App](https://github.com/react-community/create-react-native-app).
 
 Below you'll find information about performing common tasks. The most recent version of this guide is available [here](https://github.com/react-community/create-react-native-app/blob/master/react-native-scripts/template/README.md).
